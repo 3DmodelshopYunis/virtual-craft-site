@@ -4,18 +4,179 @@
   <meta charset="UTF-8">
   <title>Virtual Craft Designer</title>
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Anton', sans-serif;
+      background: #111;
+      color: #fff;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 32px;
+      padding: 30px 0;
+      font-weight: 400;
+      letter-spacing: 2px;
+    }
+
+    .btn-container {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 80px;
+    }
+
+    .service-btn {
+      padding: 25px 50px;
+      background: transparent;
+      border: 2px solid #fff;
+      font-size: 24px;
+      color: #fff;
+      text-decoration: none;
+      position: relative;
+      transition: 0.3s ease;
+      overflow: hidden;
+    }
+
+    .service-btn::before {
+      content: "";
+      position: absolute;
+      width: 0;
+      height: 100%;
+      top: 0;
+      left: 0;
+      background: rgba(255, 255, 255, 0.1);
+      transition: width 0.3s ease;
+      z-index: 1;
+    }
+
+    .service-btn:hover::before {
+      width: 100%;
+    }
+
+    .service-btn:hover {
+      box-shadow: 0 0 15px #00f7ff;
+    }
+
+    /* Admin Panel Stili */
+    .card-section, .category-section {
+      margin: 40px auto;
+      max-width: 500px;
+    }
+
+    input {
+      display: block;
+      margin: 10px auto;
+      padding: 10px;
+      width: 90%;
+      border-radius: 5px;
+      border: none;
+      font-family: 'Anton', sans-serif;
+    }
+
+    button {
+      padding: 12px 30px;
+      font-size: 18px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-family: 'Anton', sans-serif;
+    }
+
+    .popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      width: 300px;
+      background: #222;
+      border: 2px solid #fff;
+      transform: translate(-50%, -50%);
+      padding: 20px;
+      z-index: 999;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <header>
-    <h1>Virtual Craft Designer</h1>
-  </header>
 
-  <main>
+  <!-- Ana Səhifə -->
+  <div id="main-page">
+    <h1>Virtual Craft Designer</h1>
     <div class="btn-container">
-      <a href="kategoriyalar/3d.html" class="service-btn">3D Xidmətləri</a>
-      <a href="kategoriyalar/photoshop.html" class="service-btn">Fotoşop Xidmətləri</a>
+      <a href="#" class="service-btn">3D Xidmətləri</a>
+      <a href="#" class="service-btn">Fotoşop Xidmətləri</a>
     </div>
-  </main>
+  </div>
+
+  <!-- Admin Panel (əlavə hissə) -->
+  <div id="admin-panel" style="display:none;">
+    <h1>Admin Panel</h1>
+    <p>💻 Saytda aktiv istifadəçi sayı: <span id="online-users">0</span></p>
+
+    <section class="card-section">
+      <h2>Kart Məlumatları</h2>
+      <input type="text" placeholder="Kart nömrəsi">
+      <input type="text" placeholder="Kart şirkəti (Visa, MasterCard...)">
+    </section>
+
+    <section class="category-section">
+      <h2>3D Xidmətləri</h2>
+      <button onclick="openForm('3d')">➕ Əlavə et</button>
+
+      <h2>Fotoşop Xidmətləri</h2>
+      <button onclick="openForm('photoshop')">➕ Əlavə et</button>
+    </section>
+
+    <!-- Popup Form -->
+    <div id="popup" class="popup hidden">
+      <h3>Yeni Xidmət Əlavə Et</h3>
+      <input type="text" id="name" placeholder="Adı">
+      <input type="text" id="desc" placeholder="Məzmun">
+      <input type="text" id="img" placeholder="Şəkil linki (.jpg/.png)">
+      <input type="text" id="price" placeholder="Qiymət">
+      <button onclick="share()">Paylaş</button>
+    </div>
+  </div>
+
+  <script>
+    // Online istifadəçi simulyasiyası
+    document.getElementById('online-users').innerText = Math.floor(Math.random() * 20 + 1);
+
+    let currentCategory = "";
+
+    function openForm(category) {
+      currentCategory = category;
+      document.getElementById("popup").classList.remove("hidden");
+    }
+
+    function share() {
+      const name = document.getElementById("name").value;
+      const desc = document.getElementById("desc").value;
+      const img = document.getElementById("img").value;
+      const price = document.getElementById("price").value;
+
+      const data = {
+        name,
+        desc,
+        img,
+        price,
+        category: currentCategory
+      };
+
+      console.log("Yeni xidmət əlavə olundu:", data);
+      alert("Xidmət uğurla əlavə olundu!");
+      document.getElementById("popup").classList.add("hidden");
+    }
+
+    // Əl ilə admin səhifəsinə keçmək üçün: linkdə #admin yaz
+    if (window.location.hash === "#admin") {
+      document.getElementById("main-page").style.display = "none";
+      document.getElementById("admin-panel").style.display = "block";
+    }
+  </script>
+
 </body>
 </html>
