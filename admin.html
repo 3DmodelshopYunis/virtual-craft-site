@@ -2,37 +2,163 @@
 <html lang="az">
 <head>
   <meta charset="UTF-8">
-  <title>Admin Panel</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Virtual Craft</title>
   <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Anton', sans-serif;
+      background-color: #111;
+      color: white;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #00f7ff;
+      margin-bottom: 30px;
+    }
+    .online-users {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .category-section {
+      margin-bottom: 40px;
+    }
+    .category-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .category-header h2 {
+      font-size: 2rem;
+    }
+    .add-btn {
+      background: #00f7ff;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      border-radius: 5px;
+      color: black;
+    }
+    .popup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #222;
+      padding: 20px;
+      border: 2px solid #00f7ff;
+      z-index: 999;
+    }
+    .popup input, .popup textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      font-family: 'Anton', sans-serif;
+    }
+    .popup button {
+      padding: 10px;
+      background: #00f7ff;
+      border: none;
+      color: black;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .overlay {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.5);
+      z-index: 998;
+    }
+    .card-info {
+      margin: 20px 0;
+    }
+    .entry {
+      border: 1px solid #00f7ff;
+      margin-top: 10px;
+      padding: 10px;
+    }
+  </style>
 </head>
 <body>
   <h1>Admin Panel</h1>
-  <p>💻 Saytda aktiv istifadəçi sayı: <span id="online-users">0</span></p>
+  <div class="online-users">Hal-hazırda saytda olan istifadəçilər: <span id="onlineCount">0</span></div>
 
-  <section class="card-section">
-    <h2>Kart Məlumatları</h2>
-    <input type="text" placeholder="Kart nömrəsi">
-    <input type="text" placeholder="Kart şirkəti (Visa, MasterCard...)">
-  </section>
-
-  <section class="category-section">
-    <h2>3D Xidmətləri</h2>
-    <button onclick="openForm('3d')">➕ Əlavə et</button>
-
-    <h2>Fotoşop Xidmətləri</h2>
-    <button onclick="openForm('photoshop')">➕ Əlavə et</button>
-  </section>
-
-  <div id="popup" class="popup hidden">
-    <h3>Yeni Xidmət Əlavə Et</h3>
-    <input type="text" placeholder="Adı">
-    <input type="text" placeholder="Məzmun">
-    <input type="text" placeholder="Şəkil linki (.jpg/.png)">
-    <input type="text" placeholder="Qiymət">
-    <button onclick="share()">Paylaş</button>
+  <div class="card-info">
+    <h2>Kart Məlumatı</h2>
+    <input type="text" id="cardName" placeholder="Kart Adı">
+    <input type="text" id="cardType" placeholder="Şirkət Növü (Visa, Mastercard və s.)">
   </div>
 
-  <script src="admin.js"></script>
+  <div class="category-section">
+    <div class="category-header">
+      <h2>3D Xidmətləri</h2>
+      <button class="add-btn" onclick="openPopup('3d')">+</button>
+    </div>
+    <div id="list-3d"></div>
+  </div>
+
+  <div class="category-section">
+    <div class="category-header">
+      <h2>Fotoşop Xidmətləri</h2>
+      <button class="add-btn" onclick="openPopup('photoshop')">+</button>
+    </div>
+    <div id="list-photoshop"></div>
+  </div>
+
+  <div class="popup" id="popup">
+    <h2>Xidmət Əlavə Et</h2>
+    <input type="text" id="title" placeholder="Ad">
+    <textarea id="desc" placeholder="Məzmun"></textarea>
+    <input type="text" id="img" placeholder="Şəkil URL">
+    <input type="number" id="price" placeholder="Qiymət">
+    <button onclick="addEntry()">Paylaş</button>
+  </div>
+
+  <div class="overlay" id="overlay" onclick="closePopup()"></div>
+
+  <script>
+    let currentCategory = '';
+
+    function openPopup(category) {
+      currentCategory = category;
+      document.getElementById('popup').style.display = 'block';
+      document.getElementById('overlay').style.display = 'block';
+    }
+
+    function closePopup() {
+      document.getElementById('popup').style.display = 'none';
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    function addEntry() {
+      const title = document.getElementById('title').value;
+      const desc = document.getElementById('desc').value;
+      const img = document.getElementById('img').value;
+      const price = document.getElementById('price').value;
+
+      const container = document.getElementById(`list-${currentCategory}`);
+      const entry = document.createElement('div');
+      entry.classList.add('entry');
+      entry.innerHTML = `<h3>${title}</h3><p>${desc}</p><img src="${img}" width="200"><p>Qiymət: ${price} AZN</p>`;
+      container.appendChild(entry);
+      closePopup();
+    }
+
+    // Simulyasiya olunmuş online istifadəçi sayı (test üçün)
+    function simulateOnlineCount() {
+      const count = Math.floor(Math.random() * 10) + 1;
+      document.getElementById('onlineCount').textContent = count;
+    }
+    simulateOnlineCount();
+  </script>
 </body>
 </html>
