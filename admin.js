@@ -1,4 +1,3 @@
-// Fake online users (test məqsədi ilə)
 document.getElementById('online-users').innerText = Math.floor(Math.random() * 20 + 1);
 
 let currentCategory = "";
@@ -18,8 +17,8 @@ function share() {
     category: currentCategory
   };
 
-  // BURADA SADECE Konsolda saxlanılır, amma istəsən Github JSON faylına yaza bilərik!
   console.log("Yeni xidmət:", data);
   alert("Xidmət uğurla əlavə olundu!");
   document.getElementById("popup").classList.add("hidden");
+  // Əlavə olaraq Github API ilə json-a yazmaq da olar
 }
