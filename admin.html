@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel</title>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <h1>Admin Panel</h1>
+  <p>💻 Saytda aktiv istifadəçi sayı: <span id="online-users">0</span></p>
+
+  <section class="card-section">
+    <h2>Kart Məlumatları</h2>
+    <input type="text" placeholder="Kart nömrəsi">
+    <input type="text" placeholder="Kart şirkəti (Visa, MasterCard...)">
+  </section>
+
+  <section class="category-section">
+    <h2>3D Xidmətləri</h2>
+    <button onclick="openForm('3d')">➕ Əlavə et</button>
+
+    <h2>Fotoşop Xidmətləri</h2>
+    <button onclick="openForm('photoshop')">➕ Əlavə et</button>
+  </section>
+
+  <!-- Popup Form -->
+  <div id="popup" class="popup hidden">
+    <h3>Yeni Xidmət Əlavə Et</h3>
+    <input type="text" placeholder="Adı">
+    <input type="text" placeholder="Məzmun">
+    <input type="text" placeholder="Şəkil linki (.jpg/.png)">
+    <input type="text" placeholder="Qiymət">
+    <button onclick="share()">Paylaş</button>
+  </div>
+
+  <script src="admin.js"></script>
+</body>
+</html>
