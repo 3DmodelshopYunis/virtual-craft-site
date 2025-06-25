@@ -1,0 +1,53 @@
+body {
+  margin: 0;
+  font-family: 'Anton', sans-serif;
+  background: #111;
+  color: #fff;
+  text-align: center;
+}
+
+h1 {
+  font-size: 32px;
+  padding: 30px 0;
+  font-weight: 400;
+  letter-spacing: 2px;
+}
+
+.btn-container {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 80px;
+}
+
+.service-btn {
+  padding: 25px 50px;
+  background: transparent;
+  border: 2px solid #fff;
+  font-size: 24px;
+  color: #fff;
+  text-decoration: none;
+  position: relative;
+  transition: 0.3s ease;
+  overflow: hidden;
+}
+
+.service-btn::before {
+  content: "";
+  position: absolute;
+  width: 0;
+  height: 100%;
+  top: 0;
+  left: 0;
+  background: rgba(255, 255, 255, 0.1);
+  transition: width 0.3s ease;
+  z-index: 1;
+}
+
+.service-btn:hover::before {
+  width: 100%;
+}
+
+.service-btn:hover {
+  box-shadow: 0 0 15px #00f7ff;
+}
